@@ -4,6 +4,7 @@ const CompanyInformation = () => {
   return (
     <div>
       <h1>CompanyInformation</h1>
+      <h1>CompanyInformation</h1>
     </div>
   );
 };
