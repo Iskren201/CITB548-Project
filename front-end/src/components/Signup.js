@@ -55,8 +55,8 @@ function Signup() {
               onChange={(e) => setRole(e.target.value)}
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             >
-              <option value="client">Client</option>
-              <option value="employee">Employee</option>
+              <option value="Client">Client</option>
+              <option value="Employee">Employee</option>
             </select>
           </label>
           <button
