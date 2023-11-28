@@ -8,14 +8,35 @@ app.use(cors());
 
 app.get("/", cors(), (req, res) => {});
 
+// app.post("/", async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     const check = await collection.findOne({ email: email });
+
+//     if (check) {
+//       res.json("exist");
+//     } else {
+//       res.json("notexist");
+//     }
+//   } catch (e) {
+//     res.json("fail");
+//   }
+// });
+
 app.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const check = await collection.findOne({ email: email });
+    const user = await collection.findOne({ email });
 
-    if (check) {
-      res.json("exist");
+    if (user) {
+      // Проверка на паролата
+      if (user.password === password) {
+        res.json("exist");
+      } else {
+        res.json("notexist");
+      }
     } else {
       res.json("notexist");
     }

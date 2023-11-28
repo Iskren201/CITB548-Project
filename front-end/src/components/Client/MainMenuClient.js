@@ -1,11 +1,13 @@
 import React from "react";
 
-const MainMenu = ({ userRole }) => {
+import CompanyInformation from "./CompanyInformation";
+
+const MainMenuClient = ({ userRole, onItemClick }) => {
   return (
     <div className="relative flex flex-col bg-clip-border rounded-xl border-2 border-gray-300 bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2 p-4">
         <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">
-          Информацияа за:
+          Информацияа за: Client
         </h5>
       </div>
       <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
@@ -29,7 +31,9 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Логистична компания
+          <button onClick={() => onItemClick("companyInfo")}>
+            Информация за компанията
+          </button>
         </div>
 
         <div
@@ -52,7 +56,10 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Служител на компания
+          {/* <button>История на Пратките</button> */}
+          <button onClick={() => onItemClick("ShipmentHistory")}>
+            История на Пратките
+          </button>
         </div>
         <div
           role="button"
@@ -74,7 +81,10 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Клиент на компания
+          {/* <button>Изпращане на Пратка</button> */}
+          <button onClick={() => onItemClick("SendingShipment")}>
+            Изпращане на Пратка
+          </button>
         </div>
         <div
           role="button"
@@ -96,7 +106,10 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Офис на компания
+          {/* <button>Офис на компания</button> */}
+          <button onClick={() => onItemClick("CompanyOffice")}>
+            Офис на компания
+          </button>
         </div>
         <div
           role="button"
@@ -118,7 +131,10 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Пратка
+          {/* <button>Справка на Пратка</button> */}
+          <button onClick={() => onItemClick("ShipmentReference")}>
+            Справка на Пратка
+          </button>
         </div>
       </nav>
       <div className="w-full pt-5 px-4 mb-8 mx-auto"></div>
@@ -126,4 +142,4 @@ const MainMenu = ({ userRole }) => {
   );
 };
 
-export default MainMenu;
+export default MainMenuClient;

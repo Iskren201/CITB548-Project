@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Signup() {
   const history = useNavigate();
@@ -20,18 +22,20 @@ function Signup() {
       });
 
       if (res.data === "exist") {
-        alert("User already exists");
+        toast.error("User already exists");
       } else if (res.data === "notexist") {
         history("/home", { state: { id: email } });
       }
     } catch (error) {
-      alert("Error during registration");
+      toast.error("Error during registration");
       console.error(error);
     }
   }
 
   return (
     <div className="login bg-gray-100 min-h-screen flex items-center justify-center">
+      <ToastContainer />
+
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-2xl font-bold mb-4">Signup</h1>
 

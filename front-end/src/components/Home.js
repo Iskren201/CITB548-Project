@@ -3,43 +3,72 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBar from "./NavBar";
 import MainMenu from "./MainMenu";
+import MainMenuClient from "./Client/MainMenuClient";
+import CompanyInformation from "./Client/CompanyInformation";
+import ShipmentHistory from "./Client/ShipmentHistory";
+import SendingShipment from "./Client/SendingShipment";
+import CompanyOffice from "./Client/CompanyOffice";
+import ShipmentReference from "./Client/ShipmentReference";
 
 function Home() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [userRole, setUserRole] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [userRole, setUserRole] = useState(null);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/userRole", {
-          params: { email: location.state.id },
-        });
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get("http://localhost:3001/userRole", {
+                    params: { email: location.state.id },
+                });
 
-        setUserRole(response.data.role);
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-      }
+                setUserRole(response.data.role);
+            } catch (error) {
+                console.error("Error fetching user role:", error);
+            }
+        };
+
+        if (location.state && location.state.id) {
+            fetchUserRole();
+        }
+    }, [location.state]);
+
+    const handleLogout = () => {
+        if (userRole === "client") {
+            navigate("/MainMenuClient");
+        } else if (userRole === "employee") {
+            navigate("/MainMenu");
+        } else {
+            navigate("/error");
+        }
     };
 
-    if (location.state && location.state.id) {
-      fetchUserRole();
-    }
-  }, [location.state]);
+    const handleMenuItemClick = (menuItem) => {
+        setSelectedMenuItem(menuItem);
+    };
 
-  const handleLogout = () => {
-    navigate("/");
-  };
-
-  return (
-    <div>
-      <NavBar user={location.state.id} role={userRole} />
-      <main>
-        <MainMenu />
-
-      </main>
-    </div>
-  );
+    return (
+        <>
+            <NavBar
+                user={location.state.id}
+                role={userRole}
+                onLogout={handleLogout}
+            />
+            <div className="flex h-screen">
+                <main className="w-1/6">
+                    {userRole === "client" && <MainMenuClient onItemClick={handleMenuItemClick} />}
+                </main>
+                <section className="w-2/3 ml-2">
+                    {selectedMenuItem === "companyInfo" && <CompanyInformation />}
+                    {selectedMenuItem === "ShipmentHistory" && <ShipmentHistory />}
+                    {selectedMenuItem === "SendingShipment" && <SendingShipment />}
+                    {selectedMenuItem === "CompanyOffice" && <CompanyOffice />}
+                    {selectedMenuItem === "ShipmentReference" && <ShipmentReference />}
+                </section>
+            </div>
+        </>
+    );
 }
 
 export default Home;

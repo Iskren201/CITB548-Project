@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const history = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,11 +22,11 @@ function Login() {
           if (res.data === "exist") {
             history("/home", { state: { id: email } });
           } else if (res.data === "notexist") {
-            alert("User has not signed up");
+            toast.error("Wrong Password or Email");
           }
         })
         .catch((e) => {
-          alert("Wrong details");
+          toast.warning("Wrong details");
           console.log(e);
         });
     } catch (e) {
@@ -35,6 +36,7 @@ function Login() {
 
   return (
     <div className="login bg-gray-100 min-h-screen flex items-center justify-center">
+      <ToastContainer />
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-2xl font-bold mb-4">Login</h1>
 
