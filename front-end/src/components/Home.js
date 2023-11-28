@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBar from "./NavBar";
+import MainMenu from "./MainMenu";
 
 function Home() {
   const location = useLocation();
@@ -31,11 +32,12 @@ function Home() {
   };
 
   return (
-    <div className="homepage">
+    <div>
       <NavBar user={location.state.id} role={userRole} />
-      <h1>Hello {location.state.id} and welcome to the home</h1>
-      {userRole && <p>Your role is: {userRole}</p>}
-      <button onClick={handleLogout}>Logout</button>
+      <main>
+        <MainMenu />
+
+      </main>
     </div>
   );
 }
