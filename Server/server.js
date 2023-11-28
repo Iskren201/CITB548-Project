@@ -47,6 +47,22 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.get("/userRole", async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const user = await collection.findOne({ email });
+
+    if (user) {
+      res.json({ role: user.role });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("port connected");
 });

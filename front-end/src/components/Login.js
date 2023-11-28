@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -18,9 +18,9 @@ function Login() {
           password,
         })
         .then((res) => {
-          if (res.data == "exist") {
+          if (res.data === "exist") {
             history("/home", { state: { id: email } });
-          } else if (res.data == "notexist") {
+          } else if (res.data === "notexist") {
             alert("User has not signed up");
           }
         })
