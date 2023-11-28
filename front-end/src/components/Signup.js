@@ -7,29 +7,26 @@ function Signup() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("client");
 
   async function submit(e) {
     e.preventDefault();
 
     try {
-      await axios
-        .post("http://localhost:3001/signup", {
-          email,
-          password,
-        })
-        .then((res) => {
-          if (res.data === "exist") {
-            alert("User already exists");
-          } else if (res.data === "notexist") {
-            history("/home", { state: { id: email } });
-          }
-        })
-        .catch((e) => {
-          alert("Wrong details");
-          console.log(e);
-        });
-    } catch (e) {
-      console.log(e);
+      const res = await axios.post("http://localhost:3001/signup", {
+        email,
+        password,
+        role,
+      });
+
+      if (res.data === "exist") {
+        alert("User already exists");
+      } else if (res.data === "notexist") {
+        history("/home", { state: { id: email } });
+      }
+    } catch (error) {
+      alert("Error during registration");
+      console.error(error);
     }
   }
 
@@ -51,6 +48,17 @@ function Signup() {
             placeholder="Password"
             className="w-full p-2 mb-4 border border-gray-300 rounded"
           />
+          <label>
+            Role:
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full p-2 mb-4 border border-gray-300 rounded"
+            >
+              <option value="client">Client</option>
+              <option value="employee">Employee</option>
+            </select>
+          </label>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"

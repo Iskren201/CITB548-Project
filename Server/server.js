@@ -25,11 +25,12 @@ app.post("/", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   const data = {
     email: email,
     password: password,
+    role: role,
   };
 
   try {
@@ -38,8 +39,8 @@ app.post("/signup", async (req, res) => {
     if (check) {
       res.json("exist");
     } else {
+      await collection.create(data);
       res.json("notexist");
-      await collection.insertMany([data]);
     }
   } catch (e) {
     res.json("fail");
