@@ -4,8 +4,8 @@ mongoose
   .then(() => {
     console.log("mongodb connected");
   })
-  .catch(() => {
-    console.log("failed");
+  .catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
   });
 
 const newSchema = new mongoose.Schema({
