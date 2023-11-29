@@ -1,18 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { LuInfo } from "react-icons/lu";
 
-const MainMenuClient = ({ userRole, onItemClick }) => {
+const MainMenuClient = ({ onItemClick, user, role }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuOpen && !event.target.closest(".relative")) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [menuOpen]);
+
   return (
-    <div className="relative flex flex-col bg-clip-border rounded-xl border-2 border-gray-300 bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-      <div className="mb-2 p-4">
+    <div
+      className={`relative ${
+        menuOpen ? "h-screen" : ""
+      } flex flex-col bg-clip-border rounded-xl w-full border-gray-400 bg-white text-gray-700  max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 transition-all`}
+    >
+      <div className="mb-2 p-4  flex justify-between items-center">
         <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">
-          Информацияа за: Client
+          <LuInfo />
+          {user ? <p className="text-black">{`Role: ${role}`}</p> : ""}
         </h5>
+        <button
+          onClick={toggleMenu}
+          className="block sm:hidden text-blue-900 focus:outline-none"
+        >
+          {menuOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            "Show"
+          )}
+        </button>
       </div>
-      <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+      <nav
+        className={`flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700 ${
+          menuOpen ? "flex" : "hidden sm:flex"
+        }`}
+      >
         <div
           role="button"
           tabIndex="0"
           className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+          onClick={() => onItemClick("companyInfo")}
         >
           <div className="grid place-items-center mr-4">
             <svg
@@ -29,15 +83,14 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          <button onClick={() => onItemClick("companyInfo")} className="">
-            Информация за компанията
-          </button>
+          Информация за компанията
         </div>
 
         <div
           role="button"
           tabIndex="0"
           className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+          onClick={() => onItemClick("ShipmentHistory")}
         >
           <div className="grid place-items-center mr-4">
             <svg
@@ -54,15 +107,14 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          {/* <button>История на Пратките</button> */}
-          <button onClick={() => onItemClick("ShipmentHistory")}>
-            История на Пратките
-          </button>
+          История на Пратките
         </div>
+
         <div
           role="button"
           tabIndex="0"
           className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+          onClick={() => onItemClick("SendingShipment")}
         >
           <div className="grid place-items-center mr-4">
             <svg
@@ -79,15 +131,14 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          {/* <button>Изпращане на Пратка</button> */}
-          <button onClick={() => onItemClick("SendingShipment")}>
-            Изпращане на Пратка
-          </button>
+          Изпращане на Пратка
         </div>
+
         <div
           role="button"
           tabIndex="0"
           className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+          onClick={() => onItemClick("CompanyOffice")}
         >
           <div className="grid place-items-center mr-4">
             <svg
@@ -104,15 +155,14 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          {/* <button>Офис на компания</button> */}
-          <button onClick={() => onItemClick("CompanyOffice")}>
-            Офис на компания
-          </button>
+          Офис на компания
         </div>
+
         <div
           role="button"
           tabIndex="0"
           className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none"
+          onClick={() => onItemClick("ShipmentReference")}
         >
           <div className="grid place-items-center mr-4">
             <svg
@@ -129,13 +179,9 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          {/* <button>Справка на Пратка</button> */}
-          <button onClick={() => onItemClick("ShipmentReference")}>
-            Справка на Пратка
-          </button>
+          Справка на Пратка
         </div>
       </nav>
-      <div className="w-full pt-5 px-4 mb-8 mx-auto"></div>
     </div>
   );
 };

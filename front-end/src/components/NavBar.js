@@ -11,12 +11,12 @@ const NavBar = ({ user, role }) => {
   return (
     <div className="bg-gray-800 p-4 sticky">
       <div className="container mx-auto flex justify-between items-center">
-        <a className="text-white text-xl font-bold">Wellcome</a>
+        <a className="text-white text-xl font-bold">Wellcome: {user}</a>
         <div className="flex items-center space-x-4">
           {user ? (
             <>
               <div className="text-white">
-                <p className="font-semibold">{`${user}`}</p>
+                {/* <p className="font-semibold">{`${user}`}</p> */}
                 <p>{`Role: ${role}`}</p>
               </div>
               <button className="text-white" onClick={handleLogout}>
