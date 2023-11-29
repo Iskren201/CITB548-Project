@@ -69,7 +69,6 @@ function Home() {
                         <MainMenu onItemClick={handleMenuItemClick} />
                     )}
                 </main>
-
                 <section className="w-2/3 ml-2">
                     {selectedMenuItem === "companyInfo" && <CompanyInformation />}
                     {selectedMenuItem === "ShipmentHistory" && <ShipmentHistory />}
@@ -85,6 +84,7 @@ function Home() {
                     {selectedMenuItem === "CompanyOfficeEmplooye" && <CompanyOfficeEmplooye />}
                     {selectedMenuItem === "ShipmentEmployee" && <ShipmentEmployee />}
                 </section>
+                <div></div>
             </div>
         </>
     );
