@@ -23,25 +23,6 @@ const newSchema = new mongoose.Schema({
   },
 });
 
-const shipmentSchema = new mongoose.Schema({
-  senderName: {
-    type: String,
-    required: true,
-  },
-  senderId: {
-    type: String,
-    required: true,
-  },
-  receiverEmail: {
-    type: String,
-    required: true,
-  },
-});
-
-const Shipment = mongoose.model("Shipment", shipmentSchema);
-
-module.exports = Shipment;
-
 const collection = mongoose.model("collection", newSchema);
 
 module.exports = collection;

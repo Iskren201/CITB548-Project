@@ -2,6 +2,7 @@ const express = require("express");
 const collection = require("./mongo");
 const cors = require("cors");
 const app = express();
+const Shipment = require("./Shipment");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -85,26 +86,22 @@ app.get("/users", async (req, res) => {
 });
 
 app.post("/sendPackage", async (req, res) => {
-  const { senderName, senderId, receiverEmail } = req.body;
+  const { senderName, senderEmail, receiverEmail } = req.body;
 
   try {
-    const sender = await collection.findOne({ _id: senderId });
-    if (!sender) {
-      return res.status(404).json({ error: "Sender not found" });
-    }
-
-    const packageData = {
+    // Create a new shipment using the Shipment model
+    const newShipment = new Shipment({
       senderName,
-      senderId,
+      senderEmail,
       receiverEmail,
-    };
+    });
 
-    // Използвайте модела Shipment за създаване на пратката в базата данни
-    const newShipment = await Shipment.create(packageData);
+    // Save the new shipment to MongoDB
+    await newShipment.save();
 
     res.json({ message: "Package sent successfully", shipment: newShipment });
   } catch (error) {
-    console.error("Error sending package:", error); // Log the error for debugging
+    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

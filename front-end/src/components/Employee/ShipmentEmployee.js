@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ShipmentEmployee = () => {
   const [clientUsers, setClientUsers] = useState([]);
   const [senderName, setSenderName] = useState("");
-  const [senderId, setSenderId] = useState("");
+  const [senderEmail, setSenderEmail] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
 
   const handleSendPackage = async () => {
@@ -13,16 +15,16 @@ const ShipmentEmployee = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ senderName, senderId, receiverEmail }),
+        body: JSON.stringify({ senderName, senderEmail, receiverEmail }),
       });
 
       if (response.ok) {
-        console.log("Package sent successfully");
+        toast.success("Package sent successfully");
       } else {
-        console.error("Failed to send package");
+        toast.error("Failed to send package");
       }
     } catch (error) {
-      console.error("Error sending package", error);
+      toast.error("Error sending package", error);
     }
   };
 
@@ -47,6 +49,7 @@ const ShipmentEmployee = () => {
 
   return (
     <div className="bg-gray-100 p-4">
+      <ToastContainer />
       <h2 className="text-2xl font-bold mt-4">Send Package</h2>
       <form>
         <div className="mb-4">
@@ -66,7 +69,7 @@ const ShipmentEmployee = () => {
           <input
             type="text"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => setSenderId(e.target.value)}
+            onChange={(e) => setSenderEmail(e.target.value)}
           />
         </div>
         <div className="mb-4">
