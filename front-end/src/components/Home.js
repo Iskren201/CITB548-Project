@@ -67,7 +67,6 @@ function Home() {
             ShipmentEmployee,
         },
     };
-
     const renderMenuItem = () => {
         const Component = menuComponents[userRole]?.MainMenu;
         return Component ? <Component onItemClick={handleMenuItemClick} /> : null;
