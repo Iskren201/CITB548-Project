@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LuInfo } from "react-icons/lu";
+import { MdMenuBook } from "react-icons/md";
 
 const MainMenuClient = ({ onItemClick, user, role }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,45 +23,13 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
   }, [menuOpen]);
 
   return (
-    <div
-      className={`relative ${
-        menuOpen ? "h-screen" : ""
-      } flex flex-col bg-clip-border rounded-xl w-full border-gray-400 bg-white text-gray-700  max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 transition-all`}
-    >
+    <div className="relative flex flex-col bg-clip-border rounded-xl border-2 border-gray-300 bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-2 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2 p-4  flex justify-between items-center">
         <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">
-          <LuInfo />
-          {user ? <p className="text-black">{`Role: ${role}`}</p> : ""}
+          <MdMenuBook className="flex text-clip justify-center" />
         </h5>
-        <button
-          onClick={toggleMenu}
-          className="block sm:hidden text-blue-900 focus:outline-none"
-        >
-          {menuOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            "Show"
-          )}
-        </button>
       </div>
-      <nav
-        className={`flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700 ${
-          menuOpen ? "flex" : "hidden sm:flex"
-        }`}
-      >
+      <nav className="flex flex-col sm:overflow-clip gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
         <div
           role="button"
           tabIndex="0"
@@ -83,7 +51,7 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
               ></path>
             </svg>
           </div>
-          Информация за компанията
+          <p className="hidden md:block">Информация за компанията</p>
         </div>
 
         <div
@@ -107,7 +75,7 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
               ></path>
             </svg>
           </div>
-          История на Пратките
+          <p className="hidden md:block">История на Пратките</p>
         </div>
 
         <div
@@ -131,7 +99,7 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
               ></path>
             </svg>
           </div>
-          Изпращане на Пратка
+          <p className="hidden md:block">Изпращане на Пратка</p>
         </div>
 
         <div
@@ -155,7 +123,7 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
               ></path>
             </svg>
           </div>
-          Офис на компания
+          <p className="hidden md:block">Офис на компания</p>
         </div>
 
         <div
@@ -179,7 +147,7 @@ const MainMenuClient = ({ onItemClick, user, role }) => {
               ></path>
             </svg>
           </div>
-          Справка на Пратка
+          <p className="hidden md:block">Справка на Пратка</p>
         </div>
       </nav>
     </div>

@@ -16,7 +16,7 @@ import CompanyOfficeEmplooye from "./Employee/CompanyOfficeEmplooye";
 import ShipmentEmployee from "./Employee/ShipmentEmployee";
 
 
-function Home() {
+function Home({ role }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [userRole, setUserRole] = useState(null);
