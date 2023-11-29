@@ -9,6 +9,12 @@ import ShipmentHistory from "./Client/ShipmentHistory";
 import SendingShipment from "./Client/SendingShipment";
 import CompanyOffice from "./Client/CompanyOffice";
 import ShipmentReference from "./Client/ShipmentReference";
+import LogisticCompany from "./Employee/LogisticCompany";
+import CompanyEmployee from "./Employee/CompanyEmployee";
+import AcustomerOfaCompany from "./Employee/AcustomerOfaCompany";
+import CompanyOfficeEmplooye from "./Employee/CompanyOfficeEmplooye";
+import ShipmentEmployee from "./Employee/ShipmentEmployee";
+
 
 function Home() {
     const location = useLocation();
@@ -57,14 +63,27 @@ function Home() {
             />
             <div className="flex h-screen">
                 <main className="w-1/6">
-                    {userRole === "client" && <MainMenuClient onItemClick={handleMenuItemClick} />}
+                    {userRole === "client" ? (
+                        <MainMenuClient onItemClick={handleMenuItemClick} />
+                    ) : (
+                        <MainMenu onItemClick={handleMenuItemClick} />
+                    )}
                 </main>
+
                 <section className="w-2/3 ml-2">
                     {selectedMenuItem === "companyInfo" && <CompanyInformation />}
                     {selectedMenuItem === "ShipmentHistory" && <ShipmentHistory />}
                     {selectedMenuItem === "SendingShipment" && <SendingShipment />}
                     {selectedMenuItem === "CompanyOffice" && <CompanyOffice />}
                     {selectedMenuItem === "ShipmentReference" && <ShipmentReference />}
+                </section>
+
+                <section className="w-2/3 ml-2">
+                    {selectedMenuItem === "LogisticCompany" && <LogisticCompany />}
+                    {selectedMenuItem === "CompanyEmployee" && <CompanyEmployee />}
+                    {selectedMenuItem === "AcustomerOfaCompany" && <AcustomerOfaCompany />}
+                    {selectedMenuItem === "CompanyOfficeEmplooye" && <CompanyOfficeEmplooye />}
+                    {selectedMenuItem === "ShipmentEmployee" && <ShipmentEmployee />}
                 </section>
             </div>
         </>

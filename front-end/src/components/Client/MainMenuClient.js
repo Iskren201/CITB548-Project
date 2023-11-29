@@ -1,7 +1,5 @@
 import React from "react";
 
-import CompanyInformation from "./CompanyInformation";
-
 const MainMenuClient = ({ userRole, onItemClick }) => {
   return (
     <div className="relative flex flex-col bg-clip-border rounded-xl border-2 border-gray-300 bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
@@ -31,7 +29,7 @@ const MainMenuClient = ({ userRole, onItemClick }) => {
               ></path>
             </svg>
           </div>
-          <button onClick={() => onItemClick("companyInfo")}>
+          <button onClick={() => onItemClick("companyInfo")} className="">
             Информация за компанията
           </button>
         </div>

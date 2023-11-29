@@ -1,6 +1,6 @@
 import React from "react";
 
-const MainMenu = ({ userRole }) => {
+const MainMenu = ({ userRole, onItemClick }) => {
   return (
     <div className="relative flex flex-col bg-clip-border rounded-xl border-2 border-gray-300 bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2 p-4">
@@ -29,7 +29,9 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Логистична компания
+          <button onClick={() => onItemClick("LogisticCompany")} className="">
+            Логистична компания
+          </button>
         </div>
 
         <div
@@ -52,7 +54,10 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Служител на компания
+
+          <button onClick={() => onItemClick("CompanyEmployee")} className="">
+            Служител на компания
+          </button>
         </div>
         <div
           role="button"
@@ -74,7 +79,12 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Клиент на компания
+          <button
+            onClick={() => onItemClick("AcustomerOfaCompany")}
+            className=""
+          >
+            Клиент на компания
+          </button>
         </div>
         <div
           role="button"
@@ -96,7 +106,9 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Офис на компания
+          <button onClick={() => onItemClick("CompanyOfficeEmplooye")}>
+            Офис на компания
+          </button>
         </div>
         <div
           role="button"
@@ -118,7 +130,9 @@ const MainMenu = ({ userRole }) => {
               ></path>
             </svg>
           </div>
-          Пратка
+          <button onClick={() => onItemClick("ShipmentEmployee")}>
+            Пратка
+          </button>
         </div>
       </nav>
       <div className="w-full pt-5 px-4 mb-8 mx-auto"></div>
