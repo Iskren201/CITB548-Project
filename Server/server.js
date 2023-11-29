@@ -85,10 +85,41 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// app.post("/sendPackage", async (req, res) => {
+//   const { senderName, senderEmail, receiverEmail } = req.body;
+
+//   try {
+//     // Create a new shipment using the Shipment model
+//     const newShipment = new Shipment({
+//       senderName,
+//       senderEmail,
+//       receiverEmail,
+//     });
+
+//     // Save the new shipment to MongoDB
+//     await newShipment.save();
+
+//     res.json({ message: "Package sent successfully", shipment: newShipment });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 app.post("/sendPackage", async (req, res) => {
   const { senderName, senderEmail, receiverEmail } = req.body;
 
   try {
+    // Check if a shipment with the same sender and receiver emails already exists
+    const existingShipment = await Shipment.findOne({
+      senderEmail,
+      receiverEmail,
+    });
+
+    if (existingShipment) {
+      return res.status(400).json({ error: "Shipment already exists" });
+    }
+
     // Create a new shipment using the Shipment model
     const newShipment = new Shipment({
       senderName,
@@ -101,11 +132,40 @@ app.post("/sendPackage", async (req, res) => {
 
     res.json({ message: "Package sent successfully", shipment: newShipment });
   } catch (error) {
-    console.error(error);
+    console.error("Error sending package:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.listen(3001, () => {
-  console.log("port connected");
+app.get("/shipments", async (req, res) => {
+  try {
+    const shipments = await Shipment.find();
+    res.json(shipments);
+  } catch (error) {
+    console.error("Error fetching shipments", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.delete("/shipments/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Use Mongoose to find and delete the shipment
+    const deletedShipment = await Shipment.findByIdAndDelete(id);
+
+    if (!deletedShipment) {
+      return res.status(404).json({ error: "Shipment not found" });
+    }
+
+    res.json({ message: "Shipment deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting shipment", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

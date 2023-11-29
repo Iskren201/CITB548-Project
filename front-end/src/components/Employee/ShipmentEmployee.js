@@ -7,6 +7,7 @@ const ShipmentEmployee = () => {
   const [senderName, setSenderName] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
+  const [shipments, setShipments] = useState([]);
 
   const handleSendPackage = async () => {
     try {
@@ -19,12 +20,51 @@ const ShipmentEmployee = () => {
       });
 
       if (response.ok) {
+        const responseData = await response.json();
         toast.success("Package sent successfully");
+        toast.update("New Shipment:", responseData.shipment);
+        // Refresh the list of shipments after a successful send
+        fetchShipments();
       } else {
-        toast.error("Failed to send package");
+        const errorData = await response.json();
+        toast.error(`Failed to send package: ${errorData.error}`);
       }
     } catch (error) {
       toast.error("Error sending package", error);
+    }
+  };
+
+  const fetchShipments = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/shipments");
+      const data = await response.json();
+
+      if (response.ok) {
+        setShipments(data);
+      } else {
+        console.error("Failed to fetch shipments");
+      }
+    } catch (error) {
+      console.error("Error fetching shipments", error);
+    }
+  };
+
+  const handleDeleteShipment = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/shipments/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast.success("Shipment deleted successfully");
+        // Refresh the list of shipments after a successful delete
+        fetchShipments();
+      } else {
+        const errorData = await response.json();
+        toast.error(`Failed to delete shipment: ${errorData.error}`);
+      }
+    } catch (error) {
+      toast.error("Error deleting shipment", error);
     }
   };
 
@@ -45,6 +85,7 @@ const ShipmentEmployee = () => {
     };
 
     fetchData();
+    fetchShipments(); // Fetch shipments when the component mounts
   }, []);
 
   return (
@@ -90,6 +131,22 @@ const ShipmentEmployee = () => {
           Send Package
         </button>
       </form>
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold">Sent Shipments</h2>
+        <ul>
+          {shipments.map((shipment) => (
+            <li key={shipment._id} className="mb-2">
+              Sender: {shipment.senderName}, Receiver: {shipment.receiverEmail}
+              <button
+                className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                onClick={() => handleDeleteShipment(shipment._id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
