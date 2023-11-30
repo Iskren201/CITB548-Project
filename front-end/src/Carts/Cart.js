@@ -29,7 +29,7 @@ const Cart = () => {
   ];
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full h-screen flex justify-center items-center sticky">
       <div className="container mx-auto flex flex-wrap justify-around">
         {data.map((item) => (
           <div
