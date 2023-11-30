@@ -29,6 +29,7 @@ const Cart = () => {
   ];
 
   return (
+    // sticky
     <div className="w-full h-screen flex justify-center items-center sticky">
       <div className="container mx-auto flex flex-wrap justify-around">
         {data.map((item) => (
