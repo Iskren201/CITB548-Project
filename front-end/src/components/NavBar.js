@@ -11,7 +11,7 @@ const NavBar = ({ user, role }) => {
   return (
     <div className="bg-gray-800 p-4 sticky">
       <div className="container mx-auto flex justify-between items-center">
-        <a className="text-white text-xl font-bold">Wellcome: {user}</a>
+        <a className="text-white text-xl font-bold">Welcome: {user}</a>
         <div className="flex items-center space-x-4">
           {user ? (
             <>
