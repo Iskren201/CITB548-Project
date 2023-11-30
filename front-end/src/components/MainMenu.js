@@ -156,14 +156,14 @@ const MainMenu = ({ userRole, onItemClick }) => {
             </svg>
           </div>
           <button
-            onClick={() => onItemClick("ShipmentEmployee")}
+            onClick={() => onItemClick("test")}
             className="hidden md:block"
           >
             Пратка
           </button>
         </div>
       </nav>
-      <div className="w-full pt-5 px-4 mb-8 mx-auto"></div>
+      <div className="w-full pt-5 px-4 mb-8 mx-auto">test</div>
     </div>
   );
 };

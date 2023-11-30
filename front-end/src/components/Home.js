@@ -114,100 +114,100 @@ import ShipmentHistory from "./Client/ShipmentHistory";
 import SendingShipment from "./Client/SendingShipment";
 import CompanyOffice from "./Client/CompanyOffice";
 import ShipmentReference from "./Client/ShipmentReference";
-import LogisticCompany from "./Employee/LogisticCompany";
-import CompanyEmployee from "./Employee/CompanyEmployee";
-import AcustomerOfaCompany from "./Employee/AcustomerOfaCompany";
-import CompanyOfficeEmplooye from "./Employee/CompanyOfficeEmplooye";
-import ShipmentEmployee from "./Employee/ShipmentEmployee";
+
+// employee test
+
+import test from './Employee/test'
 
 function Home() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [userRole, setUserRole] = useState(null);
-  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [userRole, setUserRole] = useState(null);
+    const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/userRole", {
-          params: { email: location.state.id },
-        });
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get("http://localhost:3001/userRole", {
+                    params: { email: location.state.id },
+                });
 
-        setUserRole(response.data.role);
-        console.log("User role:", response.data.role);
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-      }
+                setUserRole(response.data.role);
+                // console.log("User role:", response.data.role);
+            } catch (error) {
+                console.error("Error fetching user role:", error);
+            }
+        };
+
+        if (location.state && location.state.id) {
+            fetchUserRole();
+        }
+    }, [location.state]);
+
+    const handleLogout = () => {
+        if (userRole === "client") {
+            navigate("/MainMenuClient");
+        } else if (userRole === "employee") {
+            navigate("/MainMenu");
+        } else {
+            navigate("/error");
+        }
     };
 
-    if (location.state && location.state.id) {
-      fetchUserRole();
-    }
-  }, [location.state]);
+    const renderMainMenu = () => {
+        if (userRole === "employee") {
+            return <MainMenu onItemClick={handleMenuItemClick} />;
+        } else if (userRole === "client") {
+            return <MainMenuClient onItemClick={handleMenuItemClick} />;
+        }
+        // Handle other roles or show a default component
+        return <MainMenu />;
+    };
+    // Working ? ?
+    const renderSelectedMenuItem = () => {
+        const menuComponents = {
+            client: {
+                MainMenuClient,
+                CompanyInformation,
+                ShipmentHistory,
+                SendingShipment,
+                CompanyOffice,
+                ShipmentReference,
+            },
+            employee: {
+                test,
+                // MainMenu,
+                // LogisticCompany,
+                // CompanyEmployee,
+                // AcustomerOfaCompany,
+                // CompanyOfficeEmplooye,
+                // ShipmentEmployee,
+            },
+        };
 
-  const handleLogout = () => {
-    if (userRole === "client") {
-      navigate("/MainMenuClient");
-    } else if (userRole === "employee") {
-      navigate("/MainMenu");
-    } else {
-      navigate("/error");
-    }
-  };
-
-  const renderMainMenu = () => {
-    if (userRole === "employee") {
-      return <MainMenu onItemClick={handleMenuItemClick} />;
-    } else if (userRole === "client") {
-      return <MainMenuClient onItemClick={handleMenuItemClick} />;
-    }
-    // Handle other roles or show a default component
-    return <MainMenu />;
-  };
-  // Working ? ?
-  const renderSelectedMenuItem = () => {
-    const menuComponents = {
-      client: {
-        MainMenuClient,
-        CompanyInformation,
-        ShipmentHistory,
-        SendingShipment,
-        CompanyOffice,
-        ShipmentReference,
-      },
-      employee: {
-        MainMenu,
-        LogisticCompany,
-        CompanyEmployee,
-        AcustomerOfaCompany,
-        CompanyOfficeEmplooye,
-        ShipmentEmployee,
-      },
+        const Component = menuComponents[userRole]?.[selectedMenuItem];
+        return Component ? <Component /> : null;
     };
 
-    const Component = menuComponents[userRole]?.[selectedMenuItem];
-    return Component ? <Component /> : null;
-  };
+    const handleMenuItemClick = (menuItem) => {
+        setSelectedMenuItem(menuItem);
+        // console.log("Selected menu item:", menuItem);
+    };
 
-  const handleMenuItemClick = (menuItem) => {
-    setSelectedMenuItem(menuItem);
-    console.log("Selected menu item:", menuItem);
-  };
-
-  return (
-    <>
-      <NavBar
-        user={location.state.id}
-        role={userRole}
-        onLogout={handleLogout}
-      />
-      <div className="flex h-screen">
-        <main className="w-1/6">{renderMainMenu()}</main>
-        <section className="w-2/3 ml-2">{renderSelectedMenuItem()}</section>
-        <div></div>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <NavBar
+                user={location.state.id}
+                role={userRole}
+                onLogout={handleLogout}
+            />
+            <div className="flex h-screen">
+                <main className="w-1/6">{renderMainMenu()}</main>
+                <section className="w-2/3 ml-2">{renderSelectedMenuItem()}</section>
+                <div></div>
+            </div>
+        </>
+    );
 }
 
 export default Home;
