@@ -163,7 +163,7 @@ function Home() {
             return <MainMenu onItemClick={handleMenuItemClick} />;
         }
         // Handle other roles or show a default component
-        return <div>Default Component</div>;
+        return <MainMenu />;
     };
 
     const renderSelectedMenuItem = () => {
