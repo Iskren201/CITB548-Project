@@ -201,11 +201,11 @@ function Home() {
                 role={userRole}
                 onLogout={handleLogout}
             />
-            <div className="flex h-screen">
+            {/* <div className="flex h-screen">
                 <main className="w-1/6">{renderMainMenu()}</main>
                 <section className="w-2/3 ml-2">{renderSelectedMenuItem()}</section>
                 <div></div>
-            </div>
+            </div> */}
         </>
     );
 }
