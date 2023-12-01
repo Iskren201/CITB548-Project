@@ -31,7 +31,7 @@ function Home() {
     const handleLogout = () => {
         navigate("/");
     };
-
+    // тест
     return (
         <>
             <Header user={location.state.id} role={userRole} onLogout={handleLogout} />
