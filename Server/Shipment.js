@@ -13,6 +13,11 @@ const shipmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  packageDescription: {
+    // Добавено поле за описание на пакета
+    type: String,
+    required: true,
+  },
 });
 
 const Shipment = mongoose.model("Shipment", shipmentSchema);

@@ -3,6 +3,7 @@ const collection = require("./mongo");
 const cors = require("cors");
 const app = express();
 const Shipment = require("./Shipment");
+const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -29,6 +30,34 @@ app.post("/", async (req, res) => {
     res.json("fail");
   }
 });
+
+// app.post("/", async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     const user = await collection.findOne({ email });
+
+//     if (user) {
+//       // Проверка на паролата
+//       if (user.password === password) {
+//         // Генериране на токен
+//         const token = jwt.sign(
+//           { email: user.email, role: user.role },
+//           "secret_key"
+//         );
+
+//         // Изпращане на токена към клиента
+//         res.json({ token });
+//       } else {
+//         res.json("notexist");
+//       }
+//     } else {
+//       res.json("notexist");
+//     }
+//   } catch (e) {
+//     res.json("fail");
+//   }
+// });
 
 app.post("/signup", async (req, res) => {
   const { email, password, role } = req.body;
@@ -86,10 +115,11 @@ app.get("/users", async (req, res) => {
 });
 
 app.post("/sendPackage", async (req, res) => {
-  const { senderName, senderEmail, receiverEmail } = req.body;
+  const { senderName, senderEmail, receiverEmail, packageDescription } =
+    req.body;
 
   try {
-    // Check if a shipment with the same sender and receiver emails already exists
+    // Проверка дали пратката със същите имейли на изпращач и получател вече съществува
     const existingShipment = await Shipment.findOne({
       senderEmail,
       receiverEmail,
@@ -99,14 +129,15 @@ app.post("/sendPackage", async (req, res) => {
       return res.status(400).json({ error: "Shipment already exists" });
     }
 
-    // Create a new shipment using the Shipment model
+    // Създаване на нова пратка с използване на модела Shipment
     const newShipment = new Shipment({
       senderName,
       senderEmail,
       receiverEmail,
+      packageDescription, // Добавяме описание на пакета
     });
 
-    // Save the new shipment to MongoDB
+    // Запазване на новата пратка в MongoDB
     await newShipment.save();
 
     res.json({ message: "Package sent successfully", shipment: newShipment });
@@ -140,6 +171,21 @@ app.delete("/shipments/:id", async (req, res) => {
     res.json({ message: "Shipment deleted successfully" });
   } catch (error) {
     console.error("Error deleting shipment", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/userShipments", async (req, res) => {
+  const { userEmail } = req.query;
+
+  try {
+    const userShipments = await Shipment.find({
+      receiverEmail: userEmail,
+    });
+
+    res.json(userShipments);
+  } catch (error) {
+    console.error("Error fetching user shipments:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

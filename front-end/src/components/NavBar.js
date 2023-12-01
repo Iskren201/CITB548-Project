@@ -4,26 +4,72 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
 import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
-import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import {
+  FiMessageSquare,
+  FiFolder,
+  FiShoppingCart,
+  FiCheckSquare,
+} from "react-icons/fi";
+import { TbTruckDelivery } from "react-icons/tb";
+import HomeClient from "./Client/HomeClient";
 
-const NavBar = ({ userRole }) => {
-  const client = [
-    { name: "dashboard", link: "/", icon: MdOutlineDashboard },
-    { name: "user", link: "/", icon: AiOutlineUser },
-    { name: "messages", link: "/", icon: FiMessageSquare },
-    { name: "analytics", link: "/", icon: TbReportAnalytics, margin: true },
-    { name: "File Manager", link: "/", icon: FiFolder },
-    { name: "Cart", link: "/", icon: FiShoppingCart },
-    { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
-    { name: "Setting", link: "/", icon: RiSettings4Line },
-  ];
+const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
+  const getMenuItems = () => {
+    if (userRole === "client") {
+      return [
+        { name: "Home", link: "/", icon: MdOutlineDashboard },
+        { name: "Account", link: "/", icon: AiOutlineUser },
+        { name: "messages", link: "/", icon: FiMessageSquare },
+        {
+          name: "Тrack Shipment",
+          link: "/",
+          icon: TbReportAnalytics,
+          margin: true,
+        },
+        { name: "File Manager", link: "/", icon: FiFolder },
+        { name: "Your Shipments", link: "/", icon: FiShoppingCart },
+        { name: "Send", link: "/", icon: TbTruckDelivery },
+        { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
+        // { name: "Setting", link: "/", icon: RiSettings4Line },
+      ];
+    } else if (userRole === "employee") {
+      // Define menu items for the employee role
+      return [
+        {
+          name: "Employee Dashboard",
+          link: "/employee/dashboard",
+          icon: MdOutlineDashboard,
+        },
+        {
+          name: "Employee Tasks",
+          link: "/employee/tasks",
+          icon: FiCheckSquare,
+        },
+        {
+          name: "Employee Reports",
+          link: "/employee/reports",
+          icon: TbReportAnalytics,
+          margin: true,
+        },
+        {
+          name: "Employee Settings",
+          link: "/employee/settings",
+          icon: RiSettings4Line,
+        },
+      ];
+    }
+
+    // Default menu items if the user role is not recognized
+    return [];
+  };
 
   const [open, setOpen] = useState(true);
+  const menuItems = getMenuItems();
+
   return (
     <section className="flex gap-6">
       <div
-        className={`bg-[#0e0e0e] min-h-screen ${
+        className={`bg-[#1f2937] min-h-screen ${
           open ? "w-72" : "w-16"
         } duration-500 text-gray-100 px-4`}
       >
@@ -35,13 +81,13 @@ const NavBar = ({ userRole }) => {
           />
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">
-          {client?.map((menu, i) => (
-            <Link
-              to={menu?.link}
+          {menuItems?.map((menu, i) => (
+            <div
               key={i}
               className={` ${
                 menu?.margin && "mt-5"
               } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
+              onClick={() => onMenuItemClick(menu?.name)}
             >
               <div>{React.createElement(menu?.icon, { size: "20" })}</div>
               <h2
@@ -61,11 +107,14 @@ const NavBar = ({ userRole }) => {
               >
                 {menu?.name}
               </h2>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
-      <div className="m-3 text-xl text-gray-900 font-semibold">{userRole}</div>
+      <div className="m-3 text-xl text-gray-900 font-semibold">
+        {selectedComponent ? selectedComponent : <HomeClient />}
+        {/* client* */}
+      </div>
     </section>
   );
 };
