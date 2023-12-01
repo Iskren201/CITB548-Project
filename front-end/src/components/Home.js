@@ -35,7 +35,7 @@ function Home() {
     return (
         <>
             <Header user={location.state.id} role={userRole} onLogout={handleLogout} />
-            <NavBar />
+            <NavBar userRole={userRole} />
         </>
     );
 }

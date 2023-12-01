@@ -7,8 +7,8 @@ import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
-  const menus = [
+const NavBar = ({ userRole }) => {
+  const client = [
     { name: "dashboard", link: "/", icon: MdOutlineDashboard },
     { name: "user", link: "/", icon: AiOutlineUser },
     { name: "messages", link: "/", icon: FiMessageSquare },
@@ -35,7 +35,7 @@ const NavBar = () => {
           />
         </div>
         <div className="mt-4 flex flex-col gap-4 relative">
-          {menus?.map((menu, i) => (
+          {client?.map((menu, i) => (
             <Link
               to={menu?.link}
               key={i}
@@ -65,9 +65,7 @@ const NavBar = () => {
           ))}
         </div>
       </div>
-      <div className="m-3 text-xl text-gray-900 font-semibold">
-        REACT TAILWIND
-      </div>
+      <div className="m-3 text-xl text-gray-900 font-semibold">{userRole}</div>
     </section>
   );
 };
