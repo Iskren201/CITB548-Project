@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBar from "./NavBar";
+import Header from "./Header";
 
 
 function Home() {
@@ -9,9 +9,7 @@ function Home() {
 
     return (
         <>
-            <NavBar
-
-            />
+            <Header />
 
         </>
     );
