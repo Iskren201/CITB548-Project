@@ -85,27 +85,6 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// app.post("/sendPackage", async (req, res) => {
-//   const { senderName, senderEmail, receiverEmail } = req.body;
-
-//   try {
-//     // Create a new shipment using the Shipment model
-//     const newShipment = new Shipment({
-//       senderName,
-//       senderEmail,
-//       receiverEmail,
-//     });
-
-//     // Save the new shipment to MongoDB
-//     await newShipment.save();
-
-//     res.json({ message: "Package sent successfully", shipment: newShipment });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
 app.post("/sendPackage", async (req, res) => {
   const { senderName, senderEmail, receiverEmail } = req.body;
 
