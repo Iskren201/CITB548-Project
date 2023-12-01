@@ -18,6 +18,7 @@ const NavBar = () => {
     { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
     { name: "Setting", link: "/", icon: RiSettings4Line },
   ];
+
   const [open, setOpen] = useState(true);
   return (
     <section className="flex gap-6">
