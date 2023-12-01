@@ -2,26 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
-
+import NavBar from "./NavBar";
 
 function Home() {
     const location = useLocation();
     const navigate = useNavigate();
     const [userRole, setUserRole] = useState(null);
-
-    // useEffect(() => {
-    //     const fetchUserInfo = async () => {
-    //         try {
-    //             const response = await axios.get(`/userRole`);
-    //             setUserRole(response.data.role);
-    //         } catch (error) {
-    //             console.error("Error fetching user info", error);
-    //             navigate("/");
-    //         }
-    //     };
-
-    //     fetchUserInfo();
-    // }, [location.state.id, navigate]);
 
     useEffect(() => {
         const fetchUserRole = async () => {
@@ -49,6 +35,7 @@ function Home() {
     return (
         <>
             <Header user={location.state.id} role={userRole} onLogout={handleLogout} />
+            <NavBar />
         </>
     );
 }
