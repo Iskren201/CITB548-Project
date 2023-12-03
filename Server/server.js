@@ -4,11 +4,18 @@ const cors = require("cors");
 const app = express();
 const Shipment = require("./Shipment");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/", cors(), (req, res) => {});
+const todoSchema = new mongoose.Schema({
+  text: String,
+  createdBy: String,
+  done: Boolean,
+});
+
+const Todo = mongoose.model("Todo", todoSchema);
 
 app.post("/", async (req, res) => {
   const { email, password } = req.body;
@@ -219,6 +226,54 @@ app.post("/updateUser", async (req, res) => {
   } catch (error) {
     // Обработка на грешките при работа с базата данни
     console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/todos", async (req, res) => {
+  const { text, createdBy, done } = req.body;
+
+  try {
+    // Използвайте create, за да създадете нов Todo в базата данни
+    const newTodo = await Todo.create({
+      text,
+      createdBy,
+      done,
+    });
+
+    res.json(newTodo);
+  } catch (error) {
+    console.error("Error creating todo:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/todos", async (req, res) => {
+  try {
+    // Използвайте find, за да вземете всички todos от базата данни
+    const todos = await Todo.find();
+
+    res.json(todos);
+  } catch (error) {
+    console.error("Error fetching todos:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.delete("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+
+  try {
+    // Използвайте findByIdAndDelete, за да изтриете Todo от базата данни
+    const deletedTodo = await Todo.findByIdAndDelete(todoId);
+
+    if (!deletedTodo) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    res.json({ message: "Todo deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting todo:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function TodoList({ currentUserEmail }) {
   const [todos, setTodos] = useState([]);
@@ -8,32 +9,69 @@ function TodoList({ currentUserEmail }) {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newTodo = {
       text: inputValue,
       createdBy: currentUserEmail,
       done: false,
     };
-    setTodos([...todos, newTodo]);
+
+    try {
+      // Изпратете POST заявка за създаване на нов Todo в базата данни
+      const response = await axios.post("http://localhost:3001/todos", newTodo);
+      setTodos([...todos, response.data]);
+    } catch (error) {
+      console.error("Error creating todo:", error);
+    }
+
     setInputValue("");
   };
 
-  const handleDelete = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos.splice(index, 1);
-    setTodos(updatedTodos);
+  const handleDelete = async (id) => {
+    try {
+      // Изпратете DELETE заявка за изтриване на Todo от базата данни
+      await axios.delete(`http://localhost:3001/todos/${id}`);
+      // Обновете локалния state след успешно изтриване
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
   };
 
-  const handleDone = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos[index].done = !updatedTodos[index].done;
-    setTodos(updatedTodos);
+  const handleDone = async (id, done) => {
+    try {
+      // Изпратете PUT заявка за актуализиране на done статуса в базата данни
+      await axios.put(`http://localhost:3001/todos/${id}`, { done });
+      // Обновете локалния state след успешна актуализация
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === id ? { ...todo, done: !todo.done } : todo
+        )
+      );
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
   };
+
+  const fetchTodos = async () => {
+    try {
+      // Изпратете GET заявка за вземане на всички Todo листи от базата данни
+      const response = await axios.get("http://localhost:3001/todos");
+      setTodos(response.data);
+    } catch (error) {
+      console.error("Error fetching todos:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Извикайте fetchTodos, когато компонентът се зареди
+    fetchTodos();
+  }, []);
 
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow-md">
-      <h1 className="text-2xl text-center text-gray-800 mb-4">Task to do </h1>
+      <h1 className="text-2xl text-center text-gray-800 mb-4">Todo List</h1>
       <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="text"
@@ -49,9 +87,9 @@ function TodoList({ currentUserEmail }) {
         </button>
       </form>
       <ul className="list-none p-0">
-        {todos.map((todo, index) => (
+        {todos.map((todo) => (
           <li
-            key={index}
+            key={todo._id}
             className={`border-b border-gray-300 py-2 flex justify-between items-center ${
               todo.done ? "line-through" : ""
             }`}
@@ -62,7 +100,7 @@ function TodoList({ currentUserEmail }) {
             </span>
             <div>
               <button
-                onClick={() => handleDone(index)}
+                onClick={() => handleDone(todo._id, todo.done)}
                 className={`p-2 ${
                   todo.done ? "bg-gray-400" : "bg-green-500"
                 } text-white rounded mr-2 hover:bg-green-600 transition duration-300`}
@@ -70,7 +108,7 @@ function TodoList({ currentUserEmail }) {
                 {todo.done ? "Undone" : "Done"}
               </button>
               <button
-                onClick={() => handleDelete(index)}
+                onClick={() => handleDelete(todo._id)}
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
               >
                 Delete
