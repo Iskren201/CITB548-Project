@@ -40,8 +40,8 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
           icon: MdOutlineDashboard,
         },
         {
-          name: "Employee Tasks",
-          link: "/employee/tasks",
+          name: "Task",
+          link: "",
           icon: FiCheckSquare,
         },
         {

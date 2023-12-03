@@ -10,7 +10,7 @@ import Account from './Client/Account'
 import ТrackShipment from './Client/ТrackShipment'
 import EmployeeDashboard from "./Employee/EmployeeDashboard";
 import AccountSettings from "./Employee/AccountSettings";
-
+import EmployeeTask from "./Employee/EmployeeTask";
 
 function Home() {
     const location = useLocation();
@@ -53,6 +53,8 @@ function Home() {
         "Saved": null,
         'Employee Dashboard': EmployeeDashboard,
         'Account Settings': AccountSettings,
+        'Task': EmployeeTask,
+
 
         // ... Добави още
     };
