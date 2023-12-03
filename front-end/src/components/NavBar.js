@@ -33,11 +33,10 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
         // { name: "Setting", link: "/", icon: RiSettings4Line },
       ];
     } else if (userRole === "employee") {
-      // Define menu items for the employee role
       return [
         {
           name: "Employee Dashboard",
-          link: "/employee/dashboard",
+          link: "/",
           icon: MdOutlineDashboard,
         },
         {
@@ -55,6 +54,11 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
           name: "Employee Settings",
           link: "/employee/settings",
           icon: RiSettings4Line,
+        },
+        {
+          name: "Account Settings",
+          link: "/",
+          icon: AiOutlineUser,
         },
       ];
     }

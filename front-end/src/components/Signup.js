@@ -10,6 +10,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("client");
+  const [userName, setUserName] = useState(""); // Ново поле за въвеждане на userName
 
   async function submit(e) {
     e.preventDefault();
@@ -19,6 +20,7 @@ function Signup() {
         email,
         password,
         role,
+        userName, // Включване на userName в заявката
       });
 
       if (res.data === "exist") {
@@ -52,6 +54,12 @@ function Signup() {
             placeholder="Password"
             className="w-full p-2 mb-4 border border-gray-300 rounded"
           />
+          <input
+            type="text"
+            onChange={(e) => setUserName(e.target.value)} // Ново поле за въвеждане на userName
+            placeholder="User Name"
+            className="w-full p-2 mb-4 border border-gray-300 rounded"
+          />
           <label>
             Role:
             <select
@@ -59,8 +67,8 @@ function Signup() {
               onChange={(e) => setRole(e.target.value)}
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             >
-              <option value="Client">Client</option>
-              <option value="Employee">Employee</option>
+              <option value="client">Client</option>
+              <option value="employee">Employee</option>
             </select>
           </label>
           <button

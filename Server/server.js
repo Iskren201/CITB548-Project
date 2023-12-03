@@ -60,12 +60,13 @@ app.post("/", async (req, res) => {
 // });
 
 app.post("/signup", async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password, role, userName } = req.body;
 
   const data = {
     email: email,
     password: password,
     role: role,
+    userName: userName,
   };
 
   try {
@@ -186,6 +187,38 @@ app.get("/userShipments", async (req, res) => {
     res.json(userShipments);
   } catch (error) {
     console.error("Error fetching user shipments:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/updateUser", async (req, res) => {
+  const { email, newPassword, newUserName } = req.body;
+
+  try {
+    // Търсене на потребителя в базата данни по имейла
+    const user = await collection.findOne({ email });
+
+    if (user) {
+      // Актуализиране на потребителя с новата парола и/или новото име
+      if (newPassword) {
+        user.password = newPassword;
+      }
+
+      if (newUserName) {
+        user.userName = newUserName;
+      }
+
+      // Запазване на актуализирания потребител в базата данни
+      await user.save();
+
+      res.json({ message: "User updated successfully" });
+    } else {
+      // Ако потребителят не е намерен, върнете съобщение за грешка
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    // Обработка на грешките при работа с базата данни
+    console.error("Error updating user:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

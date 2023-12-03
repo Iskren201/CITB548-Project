@@ -8,6 +8,9 @@ import YourShipments from './Client/YourShipments'
 import HomeClient from './Client/HomeClient'
 import Account from './Client/Account'
 import ТrackShipment from './Client/ТrackShipment'
+import EmployeeDashboard from "./Employee/EmployeeDashboard";
+import AccountSettings from "./Employee/AccountSettings";
+
 
 function Home() {
     const location = useLocation();
@@ -48,8 +51,10 @@ function Home() {
         "Your Shipments": YourShipments,
         "Send": SendPack,  // Пример: SendPack.js
         "Saved": null,
-        // "Setting": null,
-        // ...
+        'Employee Dashboard': EmployeeDashboard,
+        'Account Settings': AccountSettings,
+
+        // ... Добави още
     };
 
     const handleMenuItemClick = (component) => {
