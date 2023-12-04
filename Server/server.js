@@ -5,6 +5,7 @@ const app = express();
 const Shipment = require("./Shipment");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const Office = require("./Office");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -274,6 +275,33 @@ app.delete("/todos/:id", async (req, res) => {
     res.json({ message: "Todo deleted successfully" });
   } catch (error) {
     console.error("Error deleting todo:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/offices", async (req, res) => {
+  try {
+    const offices = await Office.find();
+    res.json(offices);
+  } catch (error) {
+    console.error("Error fetching offices", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/addOffice", async (req, res) => {
+  const officeInfo = req.body;
+
+  try {
+    // Save the new office information to MongoDB or perform any necessary actions
+    const result = await Office.create(officeInfo);
+
+    // Respond to the client
+    res.json({
+      message: "Office added successfully" /* any additional data */,
+    });
+  } catch (error) {
+    console.error("Error adding office:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

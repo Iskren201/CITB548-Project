@@ -45,14 +45,15 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
           icon: FiCheckSquare,
         },
         {
-          name: "Employee Reports",
-          link: "/employee/reports",
+          name: "Company Office",
+          link: "",
           icon: TbReportAnalytics,
-          margin: true,
         },
         {
           name: "Employee Settings",
           link: "/employee/settings",
+          margin: true,
+
           icon: RiSettings4Line,
         },
         {
@@ -60,9 +61,13 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
           link: "/",
           icon: AiOutlineUser,
         },
+        {
+          name: "Register or Send",
+          link: "/",
+          icon: AiOutlineUser,
+        },
       ];
     }
-
     // Default menu items if the user role is not recognized
     return [];
   };
