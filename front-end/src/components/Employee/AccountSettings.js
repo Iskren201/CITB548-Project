@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const AccountSettings = () => {
-  const [currentUserEmail, setCurrentUserEmail] = useState("user@example.com");
+  const [currentUserEmail, setCurrentUserEmail] = useState();
   const [newPassword, setNewPassword] = useState("");
   const [newUserName, setNewUserName] = useState("");
 
@@ -14,7 +14,7 @@ const AccountSettings = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: currentUserEmail, // Подменете с реалния имейл на текущия потребител
+          email: currentUserEmail, 
           newPassword,
           newUserName,
         }),
