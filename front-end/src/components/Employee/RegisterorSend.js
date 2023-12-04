@@ -6,10 +6,10 @@ const RegisterorSend = () => {
   const [senderName, setSenderName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [packageInfo, setPackageInfo] = useState("");
+  const [password, setPassword] = useState("");
   const [showRegisterForm, setShowRegisterForm] = useState(false);
 
   useEffect(() => {
-    // Fetch all clients when the component mounts
     const fetchClients = async () => {
       try {
         const response = await fetch("http://localhost:3001/users?role=client");
@@ -24,19 +24,81 @@ const RegisterorSend = () => {
   }, []);
 
   const handleSendPackage = async () => {
-    // Perform the logic to send the package
-    // Use selectedClient, senderName, receiverName, packageInfo
-    // ...
+    // Проверка за попълване на всички полета
+    if (!selectedClient || !senderName || !receiverName || !packageInfo) {
+      console.error("Please fill in all fields");
+      return;
+    }
 
-    console.log("Package sent successfully!");
+    try {
+      // Изпрати заявка за изпращане на пратка
+      const response = await fetch("http://localhost:3001/sendPackage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          senderName,
+          senderEmail: selectedClient,
+          receiverEmail: selectedClient,
+          packageDescription: packageInfo,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Package sent successfully!");
+        // Изчисти полетата след успешно изпращане
+        setSenderName("");
+        setReceiverName("");
+        setPackageInfo("");
+      } else {
+        console.error("Error sending package");
+      }
+    } catch (error) {
+      console.error("Error sending package:", error);
+    }
   };
 
   const handleRegisterClient = async () => {
-    // Perform the logic to register a new client
-    // Use senderName, receiverName, packageInfo
-    // ...
+    // Проверка за попълване на всички полета
+    if (!senderName || !receiverName || !packageInfo || !password) {
+      console.error("Please fill in all fields");
+      return;
+    }
 
-    console.log("Client registered successfully!");
+    try {
+      // Изпрати заявка за регистрация на нов клиент
+      const response = await fetch("http://localhost:3001/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: senderName,
+          password: password,
+          role: "client",
+          userName: senderName,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Client registered successfully!");
+        // Изчисти полетата след успешна регистрация
+        setSenderName("");
+        setReceiverName("");
+        setPackageInfo("");
+        setPassword("");
+        // Обнови списъка с клиенти
+        const updatedClients = await (
+          await fetch("http://localhost:3001/users?role=client")
+        ).json();
+        setClients(updatedClients);
+      } else {
+        console.error("Error registering client");
+      }
+    } catch (error) {
+      console.error("Error registering client:", error);
+    }
   };
 
   return (
@@ -93,6 +155,16 @@ const RegisterorSend = () => {
           <textarea
             value={packageInfo}
             onChange={(e) => setPackageInfo(e.target.value)}
+            className="w-full px-3 py-2 mb-4 border rounded focus:outline-none focus:border-blue-500"
+          />
+
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Password:
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-2 mb-4 border rounded focus:outline-none focus:border-blue-500"
           />
 
