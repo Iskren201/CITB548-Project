@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const ShipmentsList = ({ userEmail }) => {
   const [shipments, setShipments] = useState([]);
@@ -6,25 +7,32 @@ const ShipmentsList = ({ userEmail }) => {
   useEffect(() => {
     const fetchShipments = async () => {
       try {
-        const response = await fetch("http://localhost:3001/shipments");
-        const data = await response.json();
-        setShipments(data);
+        // Използваме API endpoint за заявка към пратките на дадения потребител
+        const response = await axios.get(
+          `/userShipments?userEmail=${userEmail}`
+        );
+        setShipments(response.data);
       } catch (error) {
         console.error("Error fetching shipments:", error);
       }
     };
 
     fetchShipments();
-  }, []); // Заявката ще бъде направена само веднъж при зареждането на компонента
+  }, [userEmail]);
 
   return (
-    <div className="mt-4">
-      <h2 className="text-xl font-semibold mb-2">Sent Shipments</h2>
-      <ul className="list-disc pl-4">
+    <div>
+      <h2>Пратки изпратени от {userEmail}</h2>
+      <ul>
         {shipments.map((shipment) => (
-          <li key={shipment._id} className="mb-2">
-            Sender: {shipment.senderName}, Receiver: {shipment.receiverEmail},
-            Description: {shipment.packageDescription}
+          <li key={shipment._id}>
+            <strong>Име на изпращач:</strong> {shipment.senderName}
+            <br />
+            <strong>Имейл на изпращач:</strong> {shipment.senderEmail}
+            <br />
+            <strong>Описание на пакета:</strong> {shipment.packageDescription}
+            <br />
+            <hr />
           </li>
         ))}
       </ul>
