@@ -123,6 +123,7 @@ const NavBar = ({ userRole, selectedComponent, onMenuItemClick }) => {
       <div className="m-3 text-xl text-gray-900 font-semibold">
         {selectedComponent ? selectedComponent : <HomeClient />}
         {/* client* */}
+ 
       </div>
     </section>
   );
