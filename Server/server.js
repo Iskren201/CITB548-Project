@@ -143,7 +143,8 @@ app.post("/sendPackage", async (req, res) => {
       senderName,
       senderEmail,
       receiverEmail,
-      packageDescription, // Добавяме описание на пакета
+      packageDescription,
+      sentBy,
     });
 
     // Запазване на новата пратка в MongoDB
@@ -186,10 +187,18 @@ app.delete("/shipments/:id", async (req, res) => {
 
 app.get("/userShipments", async (req, res) => {
   const { userEmail } = req.query;
+  authenticateUser;
 
   try {
+    // const userShipments = await Shipment.find({
+    //   receiverEmail: userEmail,
+    // });
+
+    const receivedBy = req.user.email;
+
     const userShipments = await Shipment.find({
       receiverEmail: userEmail,
+      receivedBy,
     });
 
     res.json(userShipments);
@@ -197,6 +206,7 @@ app.get("/userShipments", async (req, res) => {
     console.error("Error fetching user shipments:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
+  next();
 });
 
 app.post("/updateUser", async (req, res) => {
