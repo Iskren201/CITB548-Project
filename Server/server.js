@@ -144,7 +144,7 @@ app.post("/sendPackage", async (req, res) => {
       senderEmail,
       receiverEmail,
       packageDescription,
-      sentBy,
+      // sentBy,
     });
 
     // Запазване на новата пратка в MongoDB
