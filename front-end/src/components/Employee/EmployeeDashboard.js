@@ -4,6 +4,7 @@ import ClientList from "./ClientList";
 
 const EmployeeDashboard = () => {
   const [employees, setEmployees] = useState([]);
+  const [currentUserEmail, setCurrentUserEmail] = useState(""); // Добавете този стейт
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -13,6 +14,9 @@ const EmployeeDashboard = () => {
         );
         const data = await response.json();
         setEmployees(data);
+
+        // Задайте текущия логнат потребителски емайл тук
+        setCurrentUserEmail("example@example.com"); // Заменете този емайл със стойността от вашата аутентикация
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -34,9 +38,7 @@ const EmployeeDashboard = () => {
           ))}
         </ul>
         <br />
-        {employees.length > 0 && (
-          <ShipmentsList userEmail={employees[0].email} />
-        )}
+        {employees.length > 0 && <ShipmentsList userEmail={currentUserEmail} />}
       </div>
 
       {/* Client Users Section */}

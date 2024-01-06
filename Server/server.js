@@ -185,17 +185,34 @@ app.delete("/shipments/:id", async (req, res) => {
   }
 });
 
+// app.get("/userShipments", async (req, res) => {
+//   const { userEmail } = req.query;
+//   authenticateUser;
+
+//   try {
+//     // const userShipments = await Shipment.find({
+//     //   receiverEmail: userEmail,
+//     // });
+
+//     const receivedBy = req.user.email;
+
+//     const userShipments = await Shipment.find({
+//       receiverEmail: userEmail,
+//       receivedBy,
+//     });
+
+//     res.json(userShipments);
+//   } catch (error) {
+//     console.error("Error fetching user shipments:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+//   next();
+// });
 app.get("/userShipments", async (req, res) => {
   const { userEmail } = req.query;
-  authenticateUser;
+  const receivedBy = req.user.email;
 
   try {
-    // const userShipments = await Shipment.find({
-    //   receiverEmail: userEmail,
-    // });
-
-    const receivedBy = req.user.email;
-
     const userShipments = await Shipment.find({
       receiverEmail: userEmail,
       receivedBy,
@@ -206,7 +223,6 @@ app.get("/userShipments", async (req, res) => {
     console.error("Error fetching user shipments:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-  next();
 });
 
 app.post("/updateUser", async (req, res) => {
